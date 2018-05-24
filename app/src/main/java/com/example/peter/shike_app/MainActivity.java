@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener{
-
+    public static String BASE_LOGIN_URL = "http://ch.huyunfan.cn/PHP/user/";
     private TextView txt_chat;
     private TextView txt_contract;
     private TextView txt_me;

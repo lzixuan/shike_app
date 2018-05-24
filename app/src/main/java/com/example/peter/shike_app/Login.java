@@ -3,6 +3,7 @@ package com.example.peter.shike_app;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,17 +11,37 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.content.*;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.lang.String;
 
 import org.apache.http.protocol.HTTP;
-import org.json.JSONException;
+
 import org.json.JSONObject;
+import org.json.JSONException;
+//import org.json.simple.JSONObject;
+//import org.json.simple.JSONValue;
+//import org.json.simple.parser.JSONParser;
+//import net.sf.json.JSONObject;
+//import net.sf.json.JSONException;
 import org.apache.http.entity.ByteArrayEntity;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.AsyncHttpClient;
+
+import com.google.gson.Gson;
+//import com.loopj.android.http.JsonHttpResponseHandler;
+//import com.loopj.android.http.AsyncHttpClient;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
+
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+import static android.content.ContentValues.TAG;
+import static com.example.peter.shike_app.MainActivity.BASE_LOGIN_URL;
 
 public class Login extends Activity implements View.OnClickListener {
 
@@ -67,62 +88,6 @@ public class Login extends Activity implements View.OnClickListener {
         signinlater.setOnClickListener(this);
     }
 
-    private void loginByAsyncHttpClientPost(String userName, String userPass, final String username) {
-        //创建异步请求对象
-        AsyncHttpClient client = new AsyncHttpClient();
-        //输入要请求的url
-        String url = "http://120.25.232.47:8002/login/";
-        //请求的参数对象
-        JSONObject jsonObject = new JSONObject();
-        userPass = getMD5(userPass);
-        try {
-            jsonObject.put("userName",userName);
-            jsonObject.put("pwd",userPass);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        byte[] jo = RSA.encrypt(jsonObject.toString().getBytes());
-        //将参数加入到参数对象中
-        ByteArrayEntity entity = null;
-//        try {
-        entity = new ByteArrayEntity(jo);
-        entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-        //进行post请求
-        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
-            //如果成功
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                try {
-                    int status = response.getInt("loginStatus");
-                    if (status == 1) {
-                        Toast.makeText(mContext, "用户名或密码输入错误",  Toast.LENGTH_LONG).show();
-                    }
-                    else if(status == 0) {
-                        PreferenceUtil.islogged = true;
-                        PreferenceUtil.userID = response.getInt("userID");
-                        PreferenceUtil.username = username;
-                        Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Login.this, MainActivity.class));
-                        finish();
-                    }
-                }catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
-            }
-        });
-        return;
-
-    }
 
     @Override
     public void onClick(View view) {
@@ -136,8 +101,44 @@ public class Login extends Activity implements View.OnClickListener {
                 else {
                     String[] param = {Username, Passwd};
                     TextView displaytxt = (TextView) findViewById(R.id.display_txt);
-                    loginByAsyncHttpClientPost(param[0], param[1], Username);
-                }
+                    //loginByAsyncHttpClientPost(param[0], param[1], Username);
+                    Info info=new Info(param[0], param[1]); /*** 利用Gson 将对象转json字符串*/
+                    Gson gson=new Gson();
+                    String obj=gson.toJson(info);
+                    RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),obj);
+                    Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_LOGIN_URL).build();
+                    //NewsModel.postNews(param[0],param[1]);
+                    final APi login = retrofit.create(APi.class);
+                    retrofit2.Call<ResponseBody> data = login.getMessage(body);
+                    data.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            try {
+                                //Log.d(TAG, "onResponse: --ok--" + response.body());
+                                JSONObject obj1 = new JSONObject(response.body().toString());
+                                int status = (Integer)obj1.get("loginStatus");
+                                if (status == 0) {
+                                    Toast.makeText(Login.this, "login success!\n", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(Login.this, MainActivity.class));
+                                    finish();
+                                } else {
+                                    JSONObject obj2 = new JSONObject(response.body().toString());
+
+                                    String errMsg = (String)obj2.get("errMsg");// print {"host":120,"sum":100}
+                                    Toast.makeText(Login.this, "fail to login!\n", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Login.this, errMsg, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            catch(Exception e)
+                            {
+                                Toast.makeText(mContext, "connection error!\n",  Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        @Override
+                        public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+//                            Log.d(TAG, "onResponse: --err--"+t.toString());
+                            Toast.makeText(mContext, "retrofit error!\n"+t.toString(),  Toast.LENGTH_LONG).show();
+                        } });}
                 break;
             case R.id.signupbtn:
                 startActivity(new Intent(Login.this, Message.class));
