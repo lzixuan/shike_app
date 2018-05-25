@@ -33,15 +33,19 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile files('libs/httpcore-4.4.6.jar')
-    compile 'com.android.support:appcompat-v7:26.+'
+    //compile 'com.android.support:appcompat-v7:26+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.loopj.android:android-async-http:1.4.8'
     compile 'com.squareup.picasso:picasso:2.5.2'
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.5.1'
     compile files('libs/BASE64.jar')
+//<<<<<<< master
 
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.orhanobut:logger:1.15'
+//=======
+    //compile 'com.zhihu.android:matisse:0.5.0-alpha3'
+//>>>>>>> master
 }

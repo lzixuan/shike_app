@@ -1,18 +1,23 @@
 package com.example.peter.shike_app;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -21,6 +26,10 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.squareup.picasso.Picasso;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.PicassoEngine;
 
 import org.apache.http.Header;
 import org.apache.http.entity.ByteArrayEntity;
@@ -30,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.String;
 
 public class NewDish extends Activity implements View.OnClickListener{
 
@@ -45,6 +55,9 @@ public class NewDish extends Activity implements View.OnClickListener{
     private EditText header, content;
     private Boolean hasbd = false;
 
+    private ImageView upload;
+    private static final int REQUEST_CODE_CHOOSE = 23;//定义请求码常量
+    private static final int REQUESTCODE = 0;//定义请求码常量
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,9 +73,40 @@ public class NewDish extends Activity implements View.OnClickListener{
 
         mContext = NewDish.this;
         exlist_lol.setOnClickListener(this);
+
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Matisse.from(NewDish.this)
+                        .choose(MimeType.ofImage())
+                        .countable(true)
+                        .maxSelectable(1)
+                        .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.media_grid_size))
+                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                        .thumbnailScale(0.85f)
+                        .imageEngine(new PicassoEngine())
+                        .forResult(REQUEST_CODE_CHOOSE);
+            }
+        });
+
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK){
+            String path = "file://" + Matisse.obtainPathResult(data).get(0);
+            Toast.makeText(mContext, path, Toast.LENGTH_LONG).show();
+            Picasso.with(mContext)
+                    .load(path)
+                    .placeholder(R.mipmap.addphoto2)
+                    .fit()
+                    .into(upload);
+        }
     }
     public void onStart(){
         super.onStart();
+        //获取运行时权限
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUESTCODE);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUESTCODE);
     }
     private void bindViews() {
         exlist_lol = (Button) findViewById(R.id.exlist_lol);
@@ -74,6 +118,8 @@ public class NewDish extends Activity implements View.OnClickListener{
         publishbtn.setOnClickListener(this);
         neretbtn.setOnClickListener(this);
         exlist_lol.setOnClickListener(this);
+
+        upload = (ImageView)findViewById(R.id.uploadPhoto);
     }
 
     @Override

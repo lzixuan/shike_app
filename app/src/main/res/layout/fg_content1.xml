@@ -13,7 +13,7 @@
             android:id="@+id/eventcontenttitle"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:background="#51a486"
+            android:background="@color/zhihu_primary"
             android:gravity="center"
             android:text="发现美味"
             android:textColor="#FFFFFF"

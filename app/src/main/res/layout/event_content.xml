@@ -13,7 +13,7 @@
             android:id="@+id/eventcontenttitle"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:background="#51a486"
+            android:background="@color/zhihu_primary"
             android:gravity="center"
             android:text="菜品详情"
             android:textColor="#FFFFFF"
@@ -25,7 +25,6 @@
             android:layout_height="30dp"
             android:layout_marginTop="12dp"
             android:src="@mipmap/arrow_left_white"/>
-
         <Button
             android:id="@+id/eventcontentret"
             android:layout_width="wrap_content"

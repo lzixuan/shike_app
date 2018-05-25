@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:background="@color/green">
+        android:background="@color/zhihu_primary">
 
         <TextView
             android:id="@+id/textView2"

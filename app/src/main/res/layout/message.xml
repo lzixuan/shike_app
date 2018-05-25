@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:background="#51a486"
+        android:background="@color/zhihu_primary"
         android:gravity="center"
         android:text="注册"
         android:textColor="#FFFFFF"
@@ -26,7 +26,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_below="@+id/textView"
-        android:background="#d9d9d8"
+        android:background="#e9e9e6"
         android:weightSum="1">
 
         <LinearLayout
@@ -83,7 +83,7 @@
             android:id="@+id/next"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="#51a486"
+            android:background="@color/zhihu_primary"
             android:layout_marginTop="100dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
