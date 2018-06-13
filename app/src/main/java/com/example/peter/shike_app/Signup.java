@@ -50,6 +50,61 @@ public class Signup extends Activity{
         }
     }
 
+    private void loginByAsyncHttpClientPost(String userName, String userPass) {
+        //创建异步请求对象
+        AsyncHttpClient client = new AsyncHttpClient();
+        //输入要请求的url
+        String url = "http://ch.huyunfan.cn/PHP/user/login/";
+        //请求的参数对象
+        JSONObject jsonObject = new JSONObject();
+        //userPass = getMD5(userPass);
+
+        try {
+            jsonObject.put("userName",userName);
+            jsonObject.put("password",userPass);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //byte[] jo = RSA.encrypt(jsonObject.toString().getBytes());
+        byte[] jo = jsonObject.toString().getBytes();
+        //将参数加入到参数对象中
+        ByteArrayEntity entity = null;
+//        try {
+        entity = new ByteArrayEntity(jo);
+        entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+        //进行post请求
+        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
+            //如果成功
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    int status = response.getInt("loginStatus");
+                    if (status == 1) {
+                        String errMsg = response.getString("errMsg");
+                        Toast.makeText(mContext,  errMsg,  Toast.LENGTH_LONG).show();
+                    }
+                    else if(status == 0) {
+                        PreferenceUtil.token = response.getString("token");
+                    }
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
+            }
+        });
+        return;
+
+    }
+
     public static String fillMD5(String md5){
         return md5.length()==32?md5:fillMD5("0"+md5);
     }
@@ -66,10 +121,9 @@ public class Signup extends Activity{
 
 
     private void signupByAsyncHttpClientPost(String... param) {
-        String userName = param[0];
-        String password = param[1];
+        final String userName = param[0];
+        final String password = param[1];
         String mobile = param[2];
-        password = getMD5(password);
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
@@ -114,6 +168,8 @@ public class Signup extends Activity{
                     int status = response.getInt("signupStatus");
                     if(status == 0) {
                         Toast.makeText(mContext, "进入手机验证", Toast.LENGTH_SHORT).show();
+                        loginByAsyncHttpClientPost(userName, password);
+//                        PreferenceUtil.token = response.getString("token");
                         Intent it = new Intent(Signup.this, Message.class);
 //                        it.putExtra("userName", suusername.getText().toString());
                         startActivity(it);
@@ -201,9 +257,12 @@ public class Signup extends Activity{
                     Toast.makeText(mContext, "前后输入的密码不一致，请再次尝试", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    UserPass = getMD5(UserPass);
+
                     String[] param = {Username, UserPass, UserPhoneNumber};
                     TextView displaytxt = (TextView) findViewById(R.id.display_txt);
                     signupByAsyncHttpClientPost(param);
+
                 }
                 //startActivity(new Intent(Signup.this, MainActivity.class));
                 //finish();
