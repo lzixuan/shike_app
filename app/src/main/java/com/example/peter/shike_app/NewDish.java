@@ -55,6 +55,9 @@ import java.util.Arrays;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 
+import id.zelory.compressor.*;
+
+
 public class NewDish extends Activity implements View.OnClickListener{
 
     private Button publishbtn = null;
@@ -221,7 +224,7 @@ public class NewDish extends Activity implements View.OnClickListener{
                                     dish.setDescription(content.getText().toString());
                                     dish.setCanteenID(PreferenceUtil.getPlace(loc.getText().toString()));
                                     //compress the picture with Luban
-                                    if (dishPath != "") {
+                                    /*if (dishPath != "") {
                                         Luban.with(mContext)
                                                 .load(dishPath)
                                                 .setCompressListener(new OnCompressListener() {
@@ -241,7 +244,15 @@ public class NewDish extends Activity implements View.OnClickListener{
                                                         Toast.makeText(mContext, "图片压缩出错", Toast.LENGTH_LONG).show();
                                                     }
                                                 }).launch();
+                                    }*/
+                                    File actualPic = new File(dishPath);
+                                    try{
+                                        dishPic = new Compressor(mContext).compressToFile(actualPic);
+                                    }catch (IOException e){
+                                        e.printStackTrace();
                                     }
+                                    dishByAsyncHttpClientPost(dish);
+                                    finish();
                                 }
                             }
                         }).create();             //创建AlertDialog对象

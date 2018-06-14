@@ -203,7 +203,7 @@
         android:id="@+id/comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tagLinear"
+        android:layout_above="@+id/comment_fl"
         android:background="#f7d3d3"
         android:paddingLeft="15dp"
         android:text="评 论"

@@ -44,6 +44,7 @@ dependencies {
     compile files('libs/BASE64.jar')
     compile 'com.zhihu.android:matisse:0.5.0-alpha3'
     compile 'top.zibin:Luban:1.1.5'
+    compile 'id.zelory:compressor:2.1.0'
 }
 
 // 在MobSDK的扩展中注册SMSSDK的相关信息
