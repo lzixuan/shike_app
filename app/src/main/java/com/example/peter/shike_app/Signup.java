@@ -260,7 +260,6 @@ public class Signup extends Activity{
                     UserPass = getMD5(UserPass);
 
                     String[] param = {Username, UserPass, UserPhoneNumber};
-                    TextView displaytxt = (TextView) findViewById(R.id.display_txt);
                     signupByAsyncHttpClientPost(param);
 
                 }

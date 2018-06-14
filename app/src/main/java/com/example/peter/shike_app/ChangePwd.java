@@ -145,7 +145,6 @@ public class ChangePwd extends Activity {
                     Toast.makeText(mContext, "前后输入的密码不一致，请再次输入", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    TextView displaytxt = (TextView) findViewById(R.id.display_txt);
                     changePwdByAsyncHttpClientPost(UserID, OriPwd, NewPwd);
                 }
             }

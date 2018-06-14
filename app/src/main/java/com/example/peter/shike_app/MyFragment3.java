@@ -79,7 +79,7 @@ public class MyFragment3 extends Fragment implements View.OnClickListener{
                 alert = null;
                 builder = new AlertDialog.Builder(mContext);
                 alert = builder.setTitle("应用信息")
-                        .setMessage("应用名称：食刻+\n版本号：V0.8\nPKU EECS，2018")
+                        .setMessage("应用名称：食刻+\n版本号：V1.0\nPKU EECS，2018")
                         .setNegativeButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

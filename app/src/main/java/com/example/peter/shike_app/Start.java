@@ -53,6 +53,7 @@ public class Start extends Activity {
         views.add(inflater.inflate(R.layout.welcome1, null));
         views.add(inflater.inflate(R.layout.welcome2, null));
         views.add(inflater.inflate(R.layout.welcome3, null));
+        views.add(inflater.inflate(R.layout.welcome4, null));
         myPagerAdapter = new MyPagerAdapter(this, views);
         mImageViews = new ImageView[views.size()];
         drawCircl();

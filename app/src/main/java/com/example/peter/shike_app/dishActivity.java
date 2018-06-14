@@ -568,6 +568,7 @@ public class dishActivity extends AppCompatActivity {
                         scoreBar.setRating((float)score);
                         dishScore.setText(String.valueOf(score));
                         PreferenceUtil.getDish(dishID).setRating(score);
+                        PreferenceUtil.myAdapter.notifyDataSetChanged();
                     }
                     else{
                         Toast.makeText(mContext, "发布失败", Toast.LENGTH_SHORT).show();

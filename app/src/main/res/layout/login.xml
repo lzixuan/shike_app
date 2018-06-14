@@ -2,30 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/peking2"
+    android:background="@mipmap/login"
     android:id="@+id/loginUI">
 
-    <TextView
-        android:id="@+id/display_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/signinlater"
-        android:layout_alignStart="@+id/signinlater"
-        android:layout_below="@+id/view2"
-        android:layout_marginTop="94dp"
-        android:text="食 刻"
-        android:textColor="#5ea2e2"
-        android:textSize="40dp"
-        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/username"
         android:layout_width="160dp"
         android:layout_height="40dp"
-        android:layout_alignLeft="@+id/passwd"
-        android:layout_alignStart="@+id/passwd"
-        android:layout_below="@+id/display_txt"
-        android:layout_marginTop="92dp"
+        android:layout_below="@+id/view2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="222dp"
         android:background="#FFFFFF"
         android:hint="请输入用户名"
         android:maxLines="1"

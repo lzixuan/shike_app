@@ -140,7 +140,6 @@ public class Login extends Activity implements View.OnClickListener {
                 }
                 else {
                     String[] param = {Username, Passwd};
-                    TextView displaytxt = (TextView) findViewById(R.id.display_txt);
                     loginByAsyncHttpClientPost(param[0], param[1], Username);
                 }
                 break;
