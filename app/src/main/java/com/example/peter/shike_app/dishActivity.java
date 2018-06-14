@@ -113,7 +113,7 @@ public class dishActivity extends AppCompatActivity {
         }
         else{
             scoreBar.setRating((float)score);
-            dishScore.setText(String.valueOf(score));
+            dishScore.setText(String.valueOf(score).substring(0, 3));
         }
 
         PreferenceUtil.gData.clear();
@@ -141,12 +141,47 @@ public class dishActivity extends AppCompatActivity {
                 .fit()
                 .into(testImage);*/
         //load the image
-        if (dish.getPictureURL() != "") {
+        if (!dish.getPictureURL().equals("null")) {
             Picasso.with(mContext)
                     .load("http://"+dish.getPictureURL())
                     .fit()
                     .into(testImage);
         }
+        else
+            Picasso.with(mContext)
+                    .load(R.mipmap.addphoto)
+                    .resize(100, 100)
+                    .centerInside()
+                    .into(testImage);
+        testImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater inflater = LayoutInflater.from(mContext);
+                View pic_dialog = inflater.inflate(R.layout.large_pic, null);
+                final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+                ImageView large_pic = (ImageView)pic_dialog.findViewById(R.id.large_image);
+                if (!dish.getPictureURL().equals("null")) {
+                    Picasso.with(mContext)
+                            .load("http://" + dish.getPictureURL())
+                            .fit()
+                            .into(large_pic);
+                }
+                else
+                    Picasso.with(mContext)
+                            .load(R.mipmap.addphoto)
+                            .resize(100, 100)
+                            .centerInside()
+                            .into(large_pic);
+                dialog.setView(pic_dialog);
+                dialog.show();
+                large_pic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
+            }
+        });
         //点击评分按钮弹出对话框
         scoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
