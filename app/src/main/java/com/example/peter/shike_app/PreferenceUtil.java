@@ -11,15 +11,9 @@ public class PreferenceUtil {
      * 是否显示欢迎界面,true表示显示，false表示不显示
      */
     public static MyAdapter myAdapter = null;
-    public static MyAdapter myAdapter2 = null;
-    public static MyAdapter myAdapterloc = null;
     public static tagAdapter tagAdapter1 = null;
-    public static ReuseableAdapter dishAdapter = null;
     public static MyBaseExpandableListAdapter tagAdapter = null;
     public static MyAdapterforComment myAdapterforComment = null;
-    public static ArrayList<Event> datas = new ArrayList<Event>();
-    public static ArrayList<Event> mydatas = new ArrayList<Event>();
-    public static ArrayList<Event> locdatas = new ArrayList<Event>();
 
     public static ArrayList<String> tagData = new ArrayList<String>();
     public static ArrayList<String> gData = new ArrayList<String>();
@@ -30,7 +24,6 @@ public class PreferenceUtil {
     public static ArrayList<Dish> locDishdatas = new ArrayList<Dish>();
 
     public static ArrayList<Comment> commentdatas = new ArrayList<Comment>();
-    public static int maptype = 0;
     public static boolean islogged = false;
     public static int userID;
     public static String username;
@@ -61,15 +54,6 @@ public class PreferenceUtil {
         return "";
     }
 
-    public static Event getEvent(int eventID) {
-        for (int i = 0; i < datas.size(); i++) {
-            if (datas.get(i).getEventId() == eventID) {
-                return datas.get(i);
-            }
-        }
-        return null;
-    }
-
     public static Dish getDish(int dishID){
         for (int i = 0; i < dishDatas.size(); i++)
         {
@@ -78,35 +62,6 @@ public class PreferenceUtil {
             }
         }
         return null;
-    }
-
-    public static void deletebyID(int eventID) {
-        for (int i = 0; i < datas.size(); i++) {
-            if (datas.get(i).getEventId() == eventID) {
-                datas.remove(i);
-                break;
-            }
-        }
-        for (int i = 0; i < mydatas.size(); i++) {
-            if (mydatas.get(i).getEventId() == eventID) {
-                mydatas.remove(i);
-                break;
-            }
-        }
-    }
-    public static void deletebyDishID(int dishID) {
-        for (int i = 0; i < dishDatas.size(); i++) {
-            if (dishDatas.get(i).getID() == dishID) {
-                dishDatas.remove(i);
-                break;
-            }
-        }
-        for (int i = 0; i < myDishDatas.size(); i++) {
-            if (myDishDatas.get(i).getID() == dishID) {
-                myDishDatas.remove(i);
-                break;
-            }
-        }
     }
 
     public static int getPlace(String p) {

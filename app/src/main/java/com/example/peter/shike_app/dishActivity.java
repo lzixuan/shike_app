@@ -465,46 +465,6 @@ public class dishActivity extends AppCompatActivity {
         });
         return;
     }
-    private void reportEventAsyncHttpClientPost(final int eventID, final Event event) {
-        //创建异步请求对象
-        AsyncHttpClient client = new AsyncHttpClient();
-        //输入要请求的url
-        String url = "http://120.25.232.47:8002/reportOutDate/";
-        //String url = "http://www.baidu.com";
-        //请求的参数对象
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("eventID", eventID);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        //将参数加入到参数对象中
-        ByteArrayEntity entity = null;
-        try {
-            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
-            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        //进行post请求
-        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
-            //如果成功
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                Toast.makeText(mContext, "举报成功", Toast.LENGTH_SHORT).show();
-                event.setOutdate(1);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
-            }
-        });
-        return;
-    }
-
     public void postComment(final String comment, final int userID, final int dishID) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();

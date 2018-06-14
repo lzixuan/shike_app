@@ -71,10 +71,6 @@ public class MyFragment3 extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "功能即将上线，敬请期待!", Toast.LENGTH_SHORT).show();
-                /*if (PreferenceUtil.islogged)
-                    startActivity(new Intent(getActivity(), Myevent.class));
-                else
-                    Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();*/
             }
         });
         about.setOnClickListener(new View.OnClickListener() {

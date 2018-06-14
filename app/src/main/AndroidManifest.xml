@@ -41,7 +41,6 @@
             android:windowSoftInputMode="stateVisible" />
         <activity android:name="com.example.peter.shike_app.NewDish" />
         <activity android:name="com.example.peter.shike_app.Signup" />
-        <activity android:name="com.example.peter.shike_app.Myevent" />
         <activity
             android:name="com.example.peter.shike_app.dishActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" >
