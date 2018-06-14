@@ -137,7 +137,6 @@ public class Message extends Activity {
         try {
             jsonObject.put("token", token);
             jsonObject.put("mobile", phonenumber);
-//            jsonObject.put("userName", userName);
             jsonObject.put("code", code);
 
         } catch (JSONException e) {
@@ -158,16 +157,19 @@ public class Message extends Activity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 try {
-                    int status = response.getInt("getStatus");
+                    int status = response.getInt("status");
                     if (status == 1) {
-                        String errMsg = response.getString("errMsg");
-                        Toast.makeText(mContext, "注册失败, " + errMsg, Toast.LENGTH_SHORT).show();
+//                        String errMsg = response.getString("errMsg");
+                        Toast.makeText(mContext, "手机验证失败", Toast.LENGTH_SHORT).show();
                     }
                     else if(status == 0) {
-                        codestr = response.getString("obj");
                         Toast.makeText(mContext, "注册成功！", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Message.this, Login.class));
                         finish();
+                    }
+                    else if (status == 2) {
+//                        String errMsg = response.getString("errMsg");
+                        Toast.makeText(mContext, "手机号已存在", Toast.LENGTH_SHORT).show();
                     }
                 }catch (JSONException e) {
                     e.printStackTrace();

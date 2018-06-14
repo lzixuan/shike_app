@@ -26,6 +26,7 @@ public class ChangePwd extends Activity {
     private ImageButton change_pwd_ret;
     private EditText ori_pwd, new_pwd, confirm_pwd;
     Context mContext = this;
+    private String token;
 
     public static String getMD5(String str) {
         try {
@@ -56,7 +57,9 @@ public class ChangePwd extends Activity {
         JSONObject jsonObject = new JSONObject();
         oldPass = getMD5(oldPass);
         newPass = getMD5(newPass);
+        token = PreferenceUtil.token;
         try {
+            jsonObject.put("token", token);
             jsonObject.put("newPwd",newPass);
             jsonObject.put("oldPwd",oldPass);
         } catch (JSONException e) {
